@@ -54,6 +54,7 @@ const search = function(value){
 btn.addEventListener('click',function(e){
     e.preventDefault();
     const value = input.value;
+    if(!value) return;
 //    console.log(value);
     search(value);
     input.value = '';
