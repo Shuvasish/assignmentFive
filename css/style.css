@@ -1,0 +1,49 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.img-fluid{
+    max-height: 50px
+}
+/* Change values to match the radius of your form control */
+.fix-rounded-right {
+  
+}
+/*custom clases*/
+.cw-1{
+    width: 163% !important;
+}
+.cw-2{
+    width: 270px !important;
+}
+.bg-custom-gray{
+    background-color: #f6f6f6;
+}
+.bn{
+    border: 0px solid red;
+    width: 100%;
+}
+
+/*popup*/
+.check{
+    width: 100%;
+}
+.popup{
+    position: absolute;
+    max-width: 400px;
+    top: 50%;
+    left: 50%;
+    
+/*    background: rgba(255,255,255,.9);*/
+    
+    transform: translate(-50%,-50%);
+/*    https://www.themealdb.com/*/
+}
+.layer{
+    background-image: rgba(255,255,255,.9);
+}
+
+/*media*/
+@media only screen and (max-width: 1000px) {
+    
+}
