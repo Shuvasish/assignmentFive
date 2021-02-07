@@ -28,6 +28,23 @@
 .check{
     width: 100%;
 }
+.custom-card{
+    position: relative;
+}
+.cross-btn{
+    position: absolute;
+    font-size: bold;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+    color: red;
+    transition: all .2s;
+}
+.cross-btn:hover{
+    
+    transform: scale(1.2);
+    text-shadow: 0px 0px 2px black;
+}
 .popup{
     position: absolute;
     max-width: 400px;

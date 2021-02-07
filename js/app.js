@@ -1,14 +1,16 @@
 const btn = document.getElementById('search-btn');
 const input = document.getElementById('input');
 const container = document.querySelector('.results');
+const popup = document.querySelector('.popup-container');
+const cardParent = document.querySelector('.card-parent');
 
 const showResultOnUI = function(name,url){
-    const html = `<div class="col-sm-6 mb-4 col-md-4">
-                    <div class="row m-2 ">
+    const html = `<div class="col-sm-6 mb-4 col-md-4 col-lg-3 ">
+                    <div class="row m-2 card-parent">
                         <div class="card" style="">
                           <img src="${url}" class="card-img-top" alt="...">
                           <div class="card-body bg-custom-gray">
-                            <p class="card-text text-center">${name}</p>
+                            <p class="card-text item-name text-center">${name}</p>
                           </div>
                         </div>
                     </div>
@@ -51,6 +53,10 @@ const search = function(value){
     });
 }
 
+container.addEventListener('click',function(e){
+    if(!e.target.closest('.card-parent')) return;
+    console.log(e.target.closest('.card-parent').querySelector('.item-name').textContent);
+})
 btn.addEventListener('click',function(e){
     e.preventDefault();
     const value = input.value;
