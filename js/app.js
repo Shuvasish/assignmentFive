@@ -3,11 +3,12 @@ const input = document.getElementById('input');
 const container = document.querySelector('.results');
 const popup = document.querySelector('.popup-container');
 const cardParent = document.querySelector('.card-parent');
-
-const showResultOnUI = function(name,url){
+const btnCrs = document.querySelector('.cross-btn');
+popup.style.display = 'none';
+const showResultOnUI = function(name,url,id){
     const html = `<div class="col-sm-6 mb-4 col-md-4 col-lg-3 ">
-                    <div class="row m-2 card-parent">
-                        <div class="card" style="">
+                    <div class="row m-2 card-parent " >
+                        <div class="card" data-id="${id}" style="">
                           <img src="${url}" class="card-img-top" alt="...">
                           <div class="card-body bg-custom-gray">
                             <p class="card-text item-name text-center">${name}</p>
@@ -45,18 +46,74 @@ const search = function(value){
         obj.forEach(arr=>{
             const name = arr.strMeal;
             const url = arr.strMealThumb;
+            const id = arr.idMeal;
             
-            showResultOnUI(name,url);
+            showResultOnUI(name,url,id);
 //            console.log(arr.strMeal);
 //            console.log(arr.strMealThumb);
         })
     });
 }
 
+const temp = function(obj){
+    let htmlList = '';
+        for(let i=1;i<=20;i++){
+            
+            const ingNm = `strIngredient${i}`;
+            if(!obj[ingNm]){
+                
+            }else{
+//            console.log(ingNm);
+//            console.log(obj[ingNm]);
+               
+            htmlList += `<li class="list-group-item bn">✔ ${obj[ingNm]}</li>`
+//            console.log(htmlList);
+            }
+        }
+    return htmlList;
+    }
+    
+
+const showDetails = function(obj){
+    popup.style.display = 'block';
+//    console.log(obj);
+    const html = `<div class="row ">
+                    <div class="card custom-card" style="">
+                       <div class="cross-btn">X</div>
+                      <img src="${obj.strMealThumb}" class="card-img-top" alt="...">
+                    </div>
+                    <div class="inner-text">
+                        <h4 class='title  p-4 text-bold'>${obj.strMeal}</h4>
+                        <p class="px-4 text-bold">Ingredients</p>
+                        <ul class="list-group my-bg check cw-1">
+                            ${temp(obj)}
+                        </ul>
+                    </div>
+                    <div class="ingredients-lists">
+
+                    </div>
+                </div>`;
+    popup.innerHTML = html;
+//    console.log(html);
+    
+    
+}
+
+
+const findMoreAboutThisItem = function(id){
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`).then(res=>res.json()).then(data=>{
+        showDetails(data.meals[0]);
+    });
+}
+
 container.addEventListener('click',function(e){
     if(!e.target.closest('.card-parent')) return;
-    console.log(e.target.closest('.card-parent').querySelector('.item-name').textContent);
+//    console.log(e.target.closest('.card-parent').firstElementChild.dataset.id);
+    const id = e.target.closest('.card-parent').firstElementChild.dataset.id;
+    findMoreAboutThisItem(id);
 })
+
+
 btn.addEventListener('click',function(e){
     e.preventDefault();
     const value = input.value;
@@ -64,6 +121,12 @@ btn.addEventListener('click',function(e){
 //    console.log(value);
     search(value);
     input.value = '';
+    
+})
+
+popup.addEventListener('click',function(e){
+    if(e.target.classList.value !== 'cross-btn') return;
+    popup.style.display = 'none';
     
 })
 

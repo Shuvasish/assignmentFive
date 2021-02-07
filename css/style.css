@@ -11,7 +11,7 @@
 }
 /*custom clases*/
 .cw-1{
-    width: 163% !important;
+   
 }
 .cw-2{
     width: 270px !important;
@@ -48,16 +48,20 @@
 .popup{
     position: absolute;
     max-width: 400px;
-    top: 50%;
+    top: 0;
     left: 50%;
+    background: #eee;
     
 /*    background: rgba(255,255,255,.9);*/
     
-    transform: translate(-50%,-50%);
+    transform: translateX(-50%);
 /*    https://www.themealdb.com/*/
 }
 .layer{
     background-image: rgba(255,255,255,.9);
+}
+.my-bg>li{
+    background: #eee ;
 }
 
 /*media*/
