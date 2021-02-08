@@ -5,8 +5,11 @@ const popup = document.querySelector('.popup-container');
 const cardParent = document.querySelector('.card-parent');
 const btnCrs = document.querySelector('.cross-btn');
 
-// hiding popup at the first place
-popup.style.display = 'none';
+// hiding popup 
+const init = function(){
+    popup.style.display = 'none';
+}
+init();
 
 // showing search result on UI
 const showResultOnUI = function(name,url,id){
@@ -120,7 +123,7 @@ btn.addEventListener('click',function(e){
 // hide popup after clicking on the close btn of popup
 popup.addEventListener('click',function(e){
     if(e.target.classList.value !== 'cross-btn') return;
-    popup.style.display = 'none';
+    init();
 })
 
 
