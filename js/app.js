@@ -4,7 +4,11 @@ const container = document.querySelector('.results');
 const popup = document.querySelector('.popup-container');
 const cardParent = document.querySelector('.card-parent');
 const btnCrs = document.querySelector('.cross-btn');
+
+// hiding popup at the first place
 popup.style.display = 'none';
+
+// showing search result on UI
 const showResultOnUI = function(name,url,id){
     const html = `<div class="col-sm-6 mb-4 col-md-4 col-lg-3 ">
                     <div class="row m-2 card-parent " >
@@ -17,9 +21,10 @@ const showResultOnUI = function(name,url,id){
                     </div>
                 </div>`;
     container.insertAdjacentHTML('beforeend',html);
-//    console.log(html);
 }
 
+
+// showing error message when not getting any result
 const showError = function(value){
     const html = `<div class="col-12 error-message">
                             <div class=" m-2 ">
@@ -34,6 +39,7 @@ const showError = function(value){
             container.innerHTML = html;
 }
 
+// searching for food according to given search value
 const search = function(value){
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`).then(res=>res.json()).then(data=>{
         const obj = data.meals;
@@ -41,7 +47,6 @@ const search = function(value){
             showError(value);
             return;
         }
-//        console.log(obj);
         container.innerHTML = '';
         obj.forEach(arr=>{
             const name = arr.strMeal;
@@ -49,34 +54,28 @@ const search = function(value){
             const id = arr.idMeal;
             
             showResultOnUI(name,url,id);
-//            console.log(arr.strMeal);
-//            console.log(arr.strMealThumb);
         })
     });
 }
 
-const temp = function(obj){
+// making list for ingredients
+const ingredientsList = function(obj){
     let htmlList = '';
         for(let i=1;i<=20;i++){
             
             const ingNm = `strIngredient${i}`;
-            if(!obj[ingNm]){
+            if(!obj[ingNm]){  
                 
             }else{
-//            console.log(ingNm);
-//            console.log(obj[ingNm]);
-               
-            htmlList += `<li class="list-group-item bn">✔ ${obj[ingNm]}</li>`
-//            console.log(htmlList);
+                htmlList += `<li class="list-group-item bn">✔ ${obj[ingNm]}</li>`
             }
         }
     return htmlList;
     }
     
-
+// showing details on UI for a particular item
 const showDetails = function(obj){
     popup.style.display = 'block';
-//    console.log(obj);
     const html = `<div class="row ">
                     <div class="card custom-card" style="">
                        <div class="cross-btn">X</div>
@@ -86,48 +85,43 @@ const showDetails = function(obj){
                         <h4 class='title  p-4 text-bold'>${obj.strMeal}</h4>
                         <p class="px-4 text-bold">Ingredients</p>
                         <ul class="list-group my-bg check cw-1">
-                            ${temp(obj)}
+                            ${ingredientsList(obj)}
                         </ul>
                     </div>
                     <div class="ingredients-lists">
 
                     </div>
                 </div>`;
-    popup.innerHTML = html;
-//    console.log(html);
-    
-    
+    popup.innerHTML = html;  
 }
 
-
+// fetching data for a particular item using ID of that item
 const findMoreAboutThisItem = function(id){
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`).then(res=>res.json()).then(data=>{
         showDetails(data.meals[0]);
     });
 }
 
+// adding listener for items using event bubbling 
 container.addEventListener('click',function(e){
     if(!e.target.closest('.card-parent')) return;
-//    console.log(e.target.closest('.card-parent').firstElementChild.dataset.id);
     const id = e.target.closest('.card-parent').firstElementChild.dataset.id;
     findMoreAboutThisItem(id);
 })
 
-
+// adding listener for search btn
 btn.addEventListener('click',function(e){
     e.preventDefault();
     const value = input.value;
     if(!value) return;
-//    console.log(value);
     search(value);
     input.value = '';
-    
 })
 
+// hide popup after clicking on the close btn of popup
 popup.addEventListener('click',function(e){
     if(e.target.classList.value !== 'cross-btn') return;
     popup.style.display = 'none';
-    
 })
 
 
