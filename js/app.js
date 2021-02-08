@@ -23,8 +23,7 @@ const showResultOnUI = function(name,url,id){
     container.insertAdjacentHTML('beforeend',html);
 }
 
-
-// showing error message when not getting any result
+// showing error message when not getting any item
 const showError = function(value){
     const html = `<div class="col-12 error-message">
                             <div class=" m-2 ">
