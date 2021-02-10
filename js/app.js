@@ -4,27 +4,72 @@ const container = document.querySelector('.results');
 const popup = document.querySelector('.popup-container');
 const cardParent = document.querySelector('.card-parent');
 const btnCrs = document.querySelector('.cross-btn');
+const boss= document.querySelector('.boss');
 
-// hiding popup 
-const init = function(){
-    popup.style.display = 'none';
-}
-init();
 
 // showing search result on UI
-const showResultOnUI = function(name,url,id){
+const showResultOnUI = function(obj){
     const html = `<div class="col-sm-6 mb-4 col-md-4 col-lg-3 ">
-                    <div class="row m-2 card-parent " >
-                        <div class="card" data-id="${id}" style="">
-                          <img src="${url}" class="card-img-top" alt="...">
+                    <div class="row m-2 cc" data-toggle="modal" data-target="#ok${obj.idMeal}" >
+                        <div class="card"  style="">
+                          <img src="${obj.strMealThumb}" class="card-img-top" alt="...">
                           <div class="card-body bg-custom-gray">
-                            <p class="card-text item-name text-center">${name}</p>
+                            <p class="card-text item-name text-center">${obj.strMeal}</p>
                           </div>
                         </div>
                     </div>
-                </div>`;
+                </div>
+
+
+                <div class="modal fade" id="ok${obj.idMeal}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">${obj.strMeal}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                            </div>
+                                <div class="modal-body">
+                                    <div class="row ">
+                                        <div class="card custom-card" style="">
+                                            
+                                                <img src="${obj.strMealThumb}" class="card-img-top" alt="...">
+                                            </div>
+                                            <div class="inner-text">
+                                                
+                                                <p class="px-4 text-bold">Ingredients</p>
+                                                <ul class="list-group">
+                                                    ${ingredientsList(obj)}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                      
+                                </div>
+                            </div>
+                        </div>
+
+
+
+`;
     container.insertAdjacentHTML('beforeend',html);
 }
+
+// making list for ingredients
+const ingredientsList = function(obj){
+    let htmlList = '';
+        for(let i=1;i<=20;i++){
+            
+            const ingNm = `strIngredient${i}`;
+            if(!obj[ingNm]){  
+                
+            }else{
+                htmlList += `<li class="list-group-item bdr">✔ ${obj[ingNm]}</li>`
+            }
+        }
+    return htmlList;
+    }
 
 // showing error message when not getting any item
 const showError = function(value){
@@ -55,61 +100,10 @@ const search = function(value){
             const url = arr.strMealThumb;
             const id = arr.idMeal;
             
-            showResultOnUI(name,url,id);
+            showResultOnUI(arr);
         })
     });
 }
-
-// making list for ingredients
-const ingredientsList = function(obj){
-    let htmlList = '';
-        for(let i=1;i<=20;i++){
-            
-            const ingNm = `strIngredient${i}`;
-            if(!obj[ingNm]){  
-                
-            }else{
-                htmlList += `<li class="list-group-item bn">✔ ${obj[ingNm]}</li>`
-            }
-        }
-    return htmlList;
-    }
-    
-// showing details on UI for a particular item
-const showDetails = function(obj){
-    popup.style.display = 'block';
-    const html = `<div class="row ">
-                    <div class="card custom-card" style="">
-                       <div class="cross-btn">X</div>
-                      <img src="${obj.strMealThumb}" class="card-img-top" alt="...">
-                    </div>
-                    <div class="inner-text">
-                        <h4 class='title  p-4 text-bold'>${obj.strMeal}</h4>
-                        <p class="px-4 text-bold">Ingredients</p>
-                        <ul class="list-group my-bg check cw-1">
-                            ${ingredientsList(obj)}
-                        </ul>
-                    </div>
-                    <div class="ingredients-lists">
-
-                    </div>
-                </div>`;
-    popup.innerHTML = html;  
-}
-
-// fetching data for a particular item using ID of that item
-const findMoreAboutThisItem = function(id){
-    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`).then(res=>res.json()).then(data=>{
-        showDetails(data.meals[0]);
-    });
-}
-
-// adding listener for items using event bubbling 
-container.addEventListener('click',function(e){
-    if(!e.target.closest('.card-parent')) return;
-    const id = e.target.closest('.card-parent').firstElementChild.dataset.id;
-    findMoreAboutThisItem(id);
-})
 
 // adding listener for search btn
 btn.addEventListener('click',function(e){
@@ -120,11 +114,8 @@ btn.addEventListener('click',function(e){
     input.value = '';
 })
 
-// hide popup after clicking on the close btn of popup
-popup.addEventListener('click',function(e){
-    if(e.target.classList.value !== 'cross-btn') return;
-    init();
-})
+
+
 
 
 
