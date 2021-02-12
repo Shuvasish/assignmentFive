@@ -5,6 +5,14 @@ const popup = document.querySelector('.popup-container');
 const cardParent = document.querySelector('.card-parent');
 const btnCrs = document.querySelector('.cross-btn');
 const boss= document.querySelector('.boss');
+const spinnerContainer = document.querySelector('.spinner-container');
+const spinner = document.querySelector('.spinner');
+
+//hiding spinner
+const disSpiner = function(type){
+    spinner.style.display = type;
+}
+
 
 
 // showing search result on UI
@@ -53,6 +61,7 @@ const showResultOnUI = function(obj){
 
 
 `;
+    
     container.insertAdjacentHTML('beforeend',html);
 }
 
@@ -83,7 +92,8 @@ const showError = function(value){
                                 </div>
                             </div>
                         </div>`;
-            container.innerHTML = html;
+    
+    container.innerHTML = html;
 }
 
 // searching for food according to given search value
@@ -108,6 +118,13 @@ const search = function(value){
 // adding listener for search btn
 btn.addEventListener('click',function(e){
     e.preventDefault();
+    container.innerHTML = '';
+    
+    const html= `
+<div class="temp d-flex spinner-container w-100 justify-content-center">
+                <div class="spinner"></div>
+</div>`;
+    container.insertAdjacentHTML('beforeend',html);
     const value = input.value;
     if(!value) return;
     search(value);
